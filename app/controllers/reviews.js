@@ -28,10 +28,39 @@ router.route('/packages/:package_id/reviews')
 		});
 	});
 
-router.route('/packages/:package_id/reviews/:review_id')
+router.route('/users/:user_id/packages/:package_id/reviews/:review_id')
+// edit update review
+.post(function(req, res){
+	Review.findById(req.params.review_id, function(err, review){
+		if(err){
+			res.send(err);
+		}else{
+			review.user_id = req.params.user_id;
+			review.package_id = req.params.package_id;
+			review.description = req.body.description;
+			review.updated_at = Date.now();
+
+			review.save(function(err){
+				if(err){
+					res.send(err);
+				}else{
+					res.json('Review updated!');
+				}
+			});
+		}
+	});
+});
+
+router.route('/reviews/:review_id')
 // get a review by id
 	.get(function(req, res){
-
+		Review.findById(req.params.review_id, function(err, review){
+			if(err){
+				res.send(err);
+			}else{
+				res.json(review);
+			}
+		});
 	});
 
 router.route('/reviews/:review_id')

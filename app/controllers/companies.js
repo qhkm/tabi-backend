@@ -14,7 +14,7 @@ router.route('/companies')
         });
     });
 
-router.route('/company/:company_id')
+router.route('/companies/:company_id')
     // get company by id
     .get(function(req, res) {
         Company.findById(req.params.company_id, function(err, company) {

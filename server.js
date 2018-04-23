@@ -45,12 +45,12 @@ var routePackages = require('./app/controllers/packages');
 var routeReservations = require('./app/controllers/reservations');
 var routeReviews = require('./app/controllers/reviews');
 
-app.use('/', routeUsers);
-app.use('/', routeCompanies);
-app.use('/', routeAddresses);
-app.use('/', routePackages);
-app.use('/', routeReservations);
-app.use('/', routeReviews);
+app.use('/api/v1', routeUsers);
+app.use('/api/v1', routeCompanies);
+app.use('/api/v1', routeAddresses);
+app.use('/api/v1', routePackages);
+app.use('/api/v1', routeReservations);
+app.use('/api/v1', routeReviews);
 
 // launch ======================================================================
 app.listen(port);

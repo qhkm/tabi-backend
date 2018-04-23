@@ -3,7 +3,7 @@ var router = express.Router();
 
 module.exports = function(passport) {
     // normal routes ===============================================================
-    router.route('/')
+    router.route('/home')
         // Home page
         .get(function(req, res) {
             res.json('Welcome to home page! Where you will be heart broken and GTR is the only bae')
@@ -15,14 +15,14 @@ module.exports = function(passport) {
             res.json('Opps!!! Error! You have been friendzoned! Try again!');
         });
 
-    router.route('/profile')
+    router.route('/users/profile')
         // PROFILE SECTION =========================
         .get(isLoggedIn, function(req, res) {
             // show logged in user profile
             res.json(req.user);
         });
 
-    router.route('/logout')
+    router.route('/users/sign_out')
         // LOGOUT ==============================
         .get(function(req, res) {
             req.logout();
@@ -35,14 +35,14 @@ module.exports = function(passport) {
 
     // locally --------------------------------
     // LOGIN ===============================
-    router.route('/login')
+    router.route('/users/sign_in')
         .post(passport.authenticate('local-login', {
             successRedirect: '/profile', // redirect to the secure profile section
             failureRedirect: '/error', // redirect back to the signup page if there is an error
         }));
 
     // SIGNUP =================================
-    router.route('/signup')
+    router.route('/users/sign_up')
         .post(passport.authenticate('local-signup', {
             successRedirect: '/profile', // redirect to the secure profile section
             failureRedirect: '/error', // redirect back to the signup page if there is an error
@@ -183,5 +183,5 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
 
-    res.redirect('/');
+    res.redirect('/users/sign_in');
 }
