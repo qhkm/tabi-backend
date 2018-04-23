@@ -13,9 +13,9 @@ router.route('/packages/:package_id/reviews')
 			}else{
 				var review = new Review();
 
-				review.user_id
-				review.package_id
-				review.description = req.body.description
+				review.user_id = req.user;
+				review.package_id = req.params.package_id;
+				review.description = req.body.description;
 
 				review.save(function(err){
 					if(err){
@@ -31,7 +31,19 @@ router.route('/packages/:package_id/reviews')
 router.route('/packages/:package_id/reviews/:review_id')
 // get a review by id
 	.get(function(req, res){
-		
+
 	});
+
+router.route('/reviews/:review_id')
+// delete review
+.delete(function(req, res){
+	Review.remove({ _id: req.params.review_id}, function(err){
+		if(err){
+			res.send(err);
+		}else{
+			res.json('Review deleted!');
+		}
+	});
+});
 
 module.exports = router;

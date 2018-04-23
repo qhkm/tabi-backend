@@ -38,7 +38,19 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
 // routes ======================================================================
-require('./app/routes_v1')(app, passport); // load our routes and pass in our app and fully configured passport
+var routeUsers = require('./app/controllers/users')(passport);
+var routeCompanies = require('./app/controllers/companies');
+var routeAddresses = require('./app/controllers/addresses');
+var routePackages = require('./app/controllers/packages');
+var routeReservations = require('./app/controllers/reservations');
+var routeReviews = require('./app/controllers/reviews');
+
+app.use('/', routeUsers);
+app.use('/', routeCompanies);
+app.use('/', routeAddresses);
+app.use('/', routePackages);
+app.use('/', routeReservations);
+app.use('/', routeReviews);
 
 // launch ======================================================================
 app.listen(port);
