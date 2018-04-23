@@ -2,23 +2,22 @@
   "name": "tabi",
   "main": "server.js",
   "scripts": {
-	  "start": "nodemon server.js"
+    "start": "nodemon server.js"
   },
   "repository": {
-	  "type": "git",
-	  "url": "git://github.com/alkyu92/tabi.git"
+    "type": "git",
+    "url": "git://github.com/alkyu92/tabi.git"
   },
-  "dependencies" : {
+  "dependencies": {
     "express": "~4.14.0",
     "mongoose": "~4.13.1",
     "passport": "~0.3.2",
-    "passport-local" : "~1.0.0",
+    "passport-local": "~1.0.0",
     "passport-facebook": "~2.1.1",
     "passport-twitter": "~1.0.4",
-    "passport-google-oauth" : "~1.0.0",
+    "passport-google-oauth": "~1.0.0",
     "bcrypt-nodejs": "latest",
     "express-routemap": "latest",
-
     "morgan": "~1.7.0",
     "body-parser": "~1.15.2",
     "cookie-parser": "~1.4.3",
