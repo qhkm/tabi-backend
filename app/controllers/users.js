@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+var User = require('../models/user');
+
 module.exports = function(passport) {
     // normal routes ===============================================================
     router.route('/home')
@@ -15,6 +17,18 @@ module.exports = function(passport) {
             res.json('Opps!!! Error! You have been friendzoned! Try again!');
         });
 
+    router.route('/users')
+    // get all users
+    .get(function(req, res){
+      User.find(function(err, users){
+        if(err){
+          res.send(err);
+        }else{
+          res.json(users);
+        }
+      });
+    });
+
     router.route('/users/profile')
         // PROFILE SECTION =========================
         .get(isLoggedIn, function(req, res) {
@@ -26,7 +40,7 @@ module.exports = function(passport) {
         // LOGOUT ==============================
         .get(function(req, res) {
             req.logout();
-            res.redirect('/');
+            res.redirect('/api/v1/home');
         });
 
     // =============================================================================
@@ -36,16 +50,19 @@ module.exports = function(passport) {
     // locally --------------------------------
     // LOGIN ===============================
     router.route('/users/sign_in')
+        .get(function(req,res){
+          res.json('Please sign in!');
+        })
         .post(passport.authenticate('local-login', {
-            successRedirect: '/profile', // redirect to the secure profile section
-            failureRedirect: '/error', // redirect back to the signup page if there is an error
+            successRedirect: '/api/v1/users/profile', // redirect to the secure profile section
+            failureRedirect: '/api/v1/error', // redirect back to the signup page if there is an error
         }));
 
     // SIGNUP =================================
     router.route('/users/sign_up')
         .post(passport.authenticate('local-signup', {
-            successRedirect: '/profile', // redirect to the secure profile section
-            failureRedirect: '/error', // redirect back to the signup page if there is an error
+            successRedirect: '/api/v1/users/profile', // redirect to the secure profile section
+            failureRedirect: '/api/v1/error', // redirect back to the signup page if there is an error
         }));
 
     // facebook -------------------------------
@@ -183,5 +200,5 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
 
-    res.redirect('/users/sign_in');
+    res.redirect('/api/v1/users/sign_in');
 }
