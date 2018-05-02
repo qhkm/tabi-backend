@@ -8,13 +8,13 @@ module.exports = function(passport) {
     router.route('/home')
         // Home page
         .get(function(req, res) {
-            res.json('Welcome to home page! Where you will be heart broken and GTR is the only bae')
+            res.json('Welcome to home page!')
         });
 
     router.route('/error')
         // Error page
         .get(function(req, res) {
-            res.json('Opps!!! Error! You have been friendzoned! Try again!');
+            res.json('Opps!!! Error!Try again!');
         });
 
     router.route('/users')
@@ -33,7 +33,7 @@ module.exports = function(passport) {
         // PROFILE SECTION =========================
         .get(isLoggedIn, function(req, res) {
             // show logged in user profile
-            res.json(req.user);
+            res.json(req.user.local.email);
         });
 
     router.route('/users/sign_out')

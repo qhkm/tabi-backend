@@ -54,6 +54,5 @@ app.use('/api/v1', routeReviews);
 
 // launch ======================================================================
 app.listen(port);
-// console.log('The magic happens on port ' + port);
 
 displayApi(app);
