@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
 var Package = require('../models/package');
-var Company = require('../models/company');
 
 // get all packages
 router.route('/packages')
@@ -14,22 +12,9 @@ router.route('/packages')
                 res.json(packages);
             }
         });
-    });
-
-    // get package based on id
-router.route('/packages/:package_id')
-    .get(function(req, res) {
-        Package.findById(req.params.package_id, function(err, package) {
-            if (err) {
-                res.send(err);
-            } else {
-                res.json(package);
-            }
-        });
-    });
+    })
 
     // create new package
-router.route('/companies/:company_id/packages')
     .post(function(req, res) {
         var package = new Package();
 
@@ -48,14 +33,25 @@ router.route('/companies/:company_id/packages')
         });
     });
 
+// get package based on id
+router.route('/packages/:package_id')
+    .get(function(req, res) {
+        Package.findById(req.params.package_id, function(err, package) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.json(package);
+            }
+        });
+    })
+
     // edit update package
-router.route('/companies/:company_id/packages/:package_id')
     .put(function(req, res) {
         Package.findById(req.params.package_id, function(err, package) {
             if (err) {
                 res.send(err);
             } else {
-                package.company_id = req.params.company_id;
+                package.company_id = req.body.company_id;
                 package.name = req.body.name;
                 package.description = req.body.description;
                 package.price = req.body.price;

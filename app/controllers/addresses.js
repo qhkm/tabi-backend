@@ -16,12 +16,11 @@ router.route('/addresses')
         });
     })
 
-router.route('/users/:user_id/addresses')
     // create new address
     .post(function(req, res) {
         var address = new Address();
 
-        address.user_id = req.params.user_id;
+        address.user_id = req.user._id;
         address.firstname = req.body.firstname;
         address.lastname = req.body.lastname;
         address.address1 = req.body.address1;
@@ -41,14 +40,25 @@ router.route('/users/:user_id/addresses')
         })
     });
 
-router.route('/users/:user_id/addresses/:address_id')
+router.route('/addresses/:address_id')
+    // get address by id
+    .get(function(req, res) {
+        Address.findById(req.params.address_id, function(err, address) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.json(address);
+            }
+        });
+    })
+
     // edit update address
     .put(function(req, res) {
         Address.findById(req.params.address_id, function(err, address) {
             if (err) {
                 res.send(err);
             } else {
-                address.user_id = req.params.user_id;
+                address.user_id = req.user._id;
                 address.firstname = req.body.firstname;
                 address.lastname = req.body.lastname;
                 address.address1 = req.body.address1;
