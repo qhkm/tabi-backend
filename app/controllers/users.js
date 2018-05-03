@@ -1,34 +1,20 @@
 var express = require('express');
 var router = express.Router();
-
 var User = require('../models/user');
 
 module.exports = function(passport) {
 
-    // normal routes ===============================================================
-    // Home page
-    router.route('/home')
-        .get(function(req, res) {
-            res.json('Welcome to home page!')
-        });
-
-    // Error page
-    router.route('/error')
-        .get(function(req, res) {
-            res.json('Opps!!! Error!Try again!');
-        });
-
-        // get all users
+    // get all users
     router.route('/users')
-    .get(isLoggedIn, function(req, res){
-      User.find(function(err, users){
-        if(err){
-          res.send(err);
-        }else{
-          res.json(users);
-        }
-      });
-    });
+        .get(isLoggedIn, function(req, res) {
+            User.find(function(err, users) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.json(users);
+                }
+            });
+        });
 
     // PROFILE SECTION =========================
     router.route('/users/profile')
@@ -37,11 +23,58 @@ module.exports = function(passport) {
             res.json(req.user);
         });
 
-        // LOGOUT ==============================
+    router.route('/users/edit')
+        .put(isLoggedIn, function(req, res) {
+            user.first_name = req.body.first_name;
+            user.last_name = req.body.last_name;
+            user.updated_at = Date.now();
+
+            user.save(function(err) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.json('User profile updated!');
+                }
+            });
+        });
+
+      // Superuser to modify user privilege
+      router.route('/users/:user_id/profile')
+      .get(isSuperUser, function(req, res){
+        User.findById(req.params.user_id, function(err, user){
+          if(err){
+            res.send(err);
+          }else{
+            res.json(user);
+          }
+        });
+      });
+
+    router.route('/users/:user_id/set_privilege')
+        .put(isSuperUser, function(req, res) {
+          User.findById(req.params.user_id, function(err, user){
+            if(user.id !== req.params.user_id){
+              res.send(err);
+            }else{
+              user.privilege = req.body.privilege;
+              user.updated_at = Date.now();
+
+              user.save(function(err) {
+                  if (err) {
+                      res.send(err);
+                  } else {
+                      res.json('User privilege updated!');
+                  }
+              });
+            }
+          });
+        });
+
+    // LOGOUT ==============================
     router.route('/users/sign_out')
         .get(function(req, res) {
             req.logout();
-            res.redirect('/api/v1/home');
+            res.redirect('/api/v1/');
         });
 
     // =============================================================================
@@ -51,9 +84,11 @@ module.exports = function(passport) {
     // locally --------------------------------
     // LOGIN ===============================
     router.route('/users/sign_in')
-        .get(function(req,res){
-          res.json('Please sign in!');
+        // Show sign in form
+        .get(function(req, res) {
+            res.json('This is a sign in page. Please sign in first!');
         })
+
         .post(passport.authenticate('local-login', {
             successRedirect: '/api/v1/users/profile', // redirect to the secure profile section
             failureRedirect: '/api/v1/error', // redirect back to the signup page if there is an error
@@ -202,4 +237,22 @@ function isLoggedIn(req, res, next) {
         return next();
 
     res.redirect('/api/v1/users/sign_in');
+}
+
+function isSuperUser(req, res, next) {
+    if (req.user.privilege == 'Superuser') {
+        return next();
+    } else {
+        res.json('You are not authorized!');
+        res.redirect('/api/v1/');
+    }
+}
+
+function isAdmin(req, res, next) {
+    if (req.user.privilege == 'Admin') {
+        return next();
+    } else {
+        res.json('You are not authorized!');
+        res.redirect('/api/v1/');
+    }
 }

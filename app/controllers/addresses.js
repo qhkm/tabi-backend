@@ -59,8 +59,6 @@ router.route('/addresses/:address_id')
                 res.send(err);
             } else {
                 address.user_id = req.user._id;
-                address.firstname = req.body.firstname;
-                address.lastname = req.body.lastname;
                 address.address1 = req.body.address1;
                 address.address2 = req.body.address2;
                 address.zipcode = req.body.zipcode;

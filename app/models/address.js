@@ -6,12 +6,6 @@ var addressSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    firstname: {
-        type: String
-    },
-    lastname: {
-        type: String
-    },
     address1: {
         type: String
     },

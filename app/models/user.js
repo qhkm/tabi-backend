@@ -26,6 +26,16 @@ var userSchema = mongoose.Schema({
         token: String,
         email: String,
         name: String
+    },
+    first_name: {
+      type: String
+    },
+    last_name: {
+      type: String
+    },
+    privilege: {
+      type: String,
+      default: 'Normal'
     }
 
 });

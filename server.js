@@ -38,6 +38,7 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
 // routes ======================================================================
+var routeStaticPages = require('./app/controllers/static_pages');
 var routeUsers = require('./app/controllers/users')(passport);
 var routeCompanies = require('./app/controllers/companies');
 var routeAddresses = require('./app/controllers/addresses');
@@ -45,6 +46,7 @@ var routePackages = require('./app/controllers/packages');
 var routeReservations = require('./app/controllers/reservations');
 var routeReviews = require('./app/controllers/reviews');
 
+app.use('/', routeStaticPages);
 app.use('/api/v1', routeUsers);
 app.use('/api/v1', routeCompanies);
 app.use('/api/v1', routeAddresses);
