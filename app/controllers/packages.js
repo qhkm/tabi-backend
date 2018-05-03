@@ -4,8 +4,8 @@ var router = express.Router();
 var Package = require('../models/package');
 var Company = require('../models/company');
 
+// get all packages
 router.route('/packages')
-    // get all packages
     .get(function(req, res) {
         Package.find(function(err, packages) {
             if (err) {
@@ -16,8 +16,8 @@ router.route('/packages')
         });
     });
 
-router.route('/packages/:package_id')
     // get package based on id
+router.route('/packages/:package_id')
     .get(function(req, res) {
         Package.findById(req.params.package_id, function(err, package) {
             if (err) {
@@ -28,8 +28,8 @@ router.route('/packages/:package_id')
         });
     });
 
-router.route('/companies/:company_id/packages')
     // create new package
+router.route('/companies/:company_id/packages')
     .post(function(req, res) {
         var package = new Package();
 
@@ -48,8 +48,8 @@ router.route('/companies/:company_id/packages')
         });
     });
 
-router.route('/companies/:company_id/packages/:package_id')
     // edit update package
+router.route('/companies/:company_id/packages/:package_id')
     .put(function(req, res) {
         Package.findById(req.params.package_id, function(err, package) {
             if (err) {

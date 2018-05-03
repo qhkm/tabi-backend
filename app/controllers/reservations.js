@@ -2,14 +2,14 @@ var express = require('express');
 var router = express.Router();
 var Reservation = require('../models/reservation');
 
+// get all reservations
 router.route('/reservations')
-    // get all reservations
     .get(function(req, res) {
 
     });
 
-router.route('/reservations/:reservation_id')
     // delete reservation
+router.route('/reservations/:reservation_id')
     .delete(function(req, res) {
         Reservation.remove({
             _id: req.params.reservation_id

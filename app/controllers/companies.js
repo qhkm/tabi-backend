@@ -12,26 +12,13 @@ router.route('/companies')
                 res.json(companies);
             }
         });
-    });
+    })
 
-router.route('/companies/:company_id')
-    // get company by id
-    .get(function(req, res) {
-        Company.findById(req.params.company_id, function(err, company) {
-            if (err) {
-                res.send(err);
-            } else {
-                res.json(company);
-            }
-        });
-    });
-
-router.route('/users/:user_id/companies')
     // create new company
     .post(function(req, res) {
         var company = new Company();
 
-        company.user_id = req.params.user_id;
+        company.user_id = req.user._id;
         company.name = req.body.name;
         company.description = req.body.description;
 
@@ -44,19 +31,31 @@ router.route('/users/:user_id/companies')
         });
     });
 
-router.route('/users/:user_id/companies/:company_id')
+
+router.route('/companies/:company_id')
+    // get company by id
+    .get(function(req, res) {
+        Company.findById(req.params.company_id, function(err, company) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.json(company);
+            }
+        });
+    })
+
     // edit update company
     .put(function(req, res) {
         Company.findById(req.params.company_id, function(err, company) {
             if (err) {
                 res.send(err);
             } else {
-                if (company.user_id !== req.params.user_id) {
+                if (company.user_id !== req.user._id) {
                     res.redirect('/', {
                         message: 'You are not authorized!'
                     });
                 } else {
-                    company.user_id = req.params.user_id;
+                    company.user_id = req.user._id;
                     company.name = req.body.name;
                     company.description = req.body.description;
 

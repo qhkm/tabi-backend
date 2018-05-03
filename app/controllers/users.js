@@ -4,22 +4,23 @@ var router = express.Router();
 var User = require('../models/user');
 
 module.exports = function(passport) {
+
     // normal routes ===============================================================
+    // Home page
     router.route('/home')
-        // Home page
         .get(function(req, res) {
             res.json('Welcome to home page!')
         });
 
+    // Error page
     router.route('/error')
-        // Error page
         .get(function(req, res) {
             res.json('Opps!!! Error!Try again!');
         });
 
+        // get all users
     router.route('/users')
-    // get all users
-    .get(function(req, res){
+    .get(isLoggedIn, function(req, res){
       User.find(function(err, users){
         if(err){
           res.send(err);
@@ -29,15 +30,15 @@ module.exports = function(passport) {
       });
     });
 
+    // PROFILE SECTION =========================
     router.route('/users/profile')
-        // PROFILE SECTION =========================
         .get(isLoggedIn, function(req, res) {
             // show logged in user profile
-            res.json(req.user.local.email);
+            res.json(req.user);
         });
 
-    router.route('/users/sign_out')
         // LOGOUT ==============================
+    router.route('/users/sign_out')
         .get(function(req, res) {
             req.logout();
             res.redirect('/api/v1/home');

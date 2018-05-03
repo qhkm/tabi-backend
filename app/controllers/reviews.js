@@ -4,8 +4,8 @@ var router = express.Router();
 var Review = require('../models/review');
 var Package = require('../models/package');
 
-router.route('/packages/:package_id/reviews')
 // create new review
+router.route('/packages/:package_id/reviews')
 	.post(function(req, res){
 		Package.findById(req.params.package_id, function(err, package){
 			if(err){
@@ -28,8 +28,8 @@ router.route('/packages/:package_id/reviews')
 		});
 	});
 
+	// edit update review
 router.route('/users/:user_id/packages/:package_id/reviews/:review_id')
-// edit update review
 .post(function(req, res){
 	Review.findById(req.params.review_id, function(err, review){
 		if(err){
@@ -51,8 +51,8 @@ router.route('/users/:user_id/packages/:package_id/reviews/:review_id')
 	});
 });
 
-router.route('/reviews/:review_id')
 // get a review by id
+router.route('/reviews/:review_id')
 	.get(function(req, res){
 		Review.findById(req.params.review_id, function(err, review){
 			if(err){
