@@ -6,7 +6,7 @@ module.exports = function(passport) {
 
     // get all users
     router.route('/users')
-        .get(isLoggedIn, function(req, res) {
+        .get(function(req, res) {
             User.find(function(err, users) {
                 if (err) {
                     res.send(err);
@@ -74,7 +74,7 @@ module.exports = function(passport) {
     router.route('/users/sign_out')
         .get(function(req, res) {
             req.logout();
-            res.redirect('/api/v1/');
+            res.redirect('/api/v1/users/sign_in');
         });
 
     // =============================================================================
@@ -91,14 +91,14 @@ module.exports = function(passport) {
 
         .post(passport.authenticate('local-login', {
             successRedirect: '/api/v1/users/profile', // redirect to the secure profile section
-            failureRedirect: '/api/v1/error', // redirect back to the signup page if there is an error
+            failureRedirect: '/error', // redirect back to the signup page if there is an error
         }));
 
     // SIGNUP =================================
     router.route('/users/sign_up')
         .post(passport.authenticate('local-signup', {
             successRedirect: '/api/v1/users/profile', // redirect to the secure profile section
-            failureRedirect: '/api/v1/error', // redirect back to the signup page if there is an error
+            failureRedirect: '/error', // redirect back to the signup page if there is an error
         }));
 
     // facebook -------------------------------
@@ -244,7 +244,7 @@ function isSuperUser(req, res, next) {
         return next();
     } else {
         res.json('You are not authorized!');
-        res.redirect('/api/v1/');
+        res.redirect('/api/v1/users/sign_in');
     }
 }
 
@@ -253,6 +253,6 @@ function isAdmin(req, res, next) {
         return next();
     } else {
         res.json('You are not authorized!');
-        res.redirect('/api/v1/');
+        res.redirect('/api/v1/users/sign_in');
     }
 }
